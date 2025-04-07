@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import logo from '../src/assets/logo.png'
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  return (
-    <></>
-  )
+  return <div className=" h-full flex items-center justify-center">
+    <div>
+      <img src={logo} className="h-40" />
+      <form>
+      </form>
+    </div>
+  </div>;
 }
 
-export default App
+export default App;
