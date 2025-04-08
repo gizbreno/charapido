@@ -1,17 +1,26 @@
-import { useState } from "react";
-import logo from '../src/assets/logo.png'
-import "./App.css";
+import { createBrowserRouter } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0);
+import Layout from './components/Layout'
+import DashBoard from './pages/DashBoard'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
-  return <div className=" h-full flex items-center justify-center">
-    <div>
-      <img src={logo} className="h-40" />
-      <form>
-      </form>
-    </div>
-  </div>;
-}
-
-export default App;
+export const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element:  <DashBoard />,
+      }
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+]);
