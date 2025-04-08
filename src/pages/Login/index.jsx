@@ -11,13 +11,12 @@ import logo from "../../assets/logo.png";
 //elements
 import { useState } from "react";
 import { db } from "../../firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  limitToLast,
-} from "firebase/firestore";
+  getAuth,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -30,8 +29,25 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  //function to check if number exists
+  const auth = getAuth();
 
+  const configureRecaptcha = () => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber
+            console.log("reCAPTCHA resolvido!");
+          },
+        }
+      );
+    }
+  };
+
+  //function to check if number exists
   const handleCheckPhone = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -112,7 +128,12 @@ const Login = () => {
                 Diite o codigo enviado para{" "}
                 <p className="font-bold text-principal">{telefone}</p>
               </span>
-              <input type="tel" className="bg-apoio rounded text-center w-40 outline-0 p-2 font-bold " inputMode="numeric" maxLength={6} /> 
+              <input
+                type="tel"
+                className="bg-apoio rounded text-center w-40 outline-0 p-2 font-bold "
+                inputMode="numeric"
+                maxLength={6}
+              />
               <button
                 onClick={(e) => handleCheckPhone(e)}
                 className="transition-all rounded bg-botoes px-3 py-1 text-principal font-bold cursor-pointer hover:bg-principal hover:text-fundo flex items-center"
