@@ -1,19 +1,37 @@
-import Box from "../../components/Box";
+//components
 import Container from "../../components/container";
 
+//libs
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
+//assets
 import logo from "../../assets/logo.png";
+
+//elements
 import { useState } from "react";
+import { db } from "../../firebase";
+import {ClipLoader} from "react-spinners";
 
 const Login = () => {
   const [telefone, setTelefone] = useState("");
+  const [setp, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  //function to check if number exists
+
+  const handleCheckPhone = (e) => {
+    e.preventDefault();
+    setLoading(true);
+  };
   return (
     <Container>
       <div className="flex justify-center flex-col items-center">
         <img className="w-40 lg:w-60" src={logo} />
-        <form className="flex justify-center flex-col items-center gap-5" onSubmit={e=>e.preventDefault()}>
+        <form
+          className="flex justify-center flex-col items-center gap-5"
+          onSubmit={(e) => handleCheckPhone(e)}
+        >
           <PhoneInput
             country={"br"}
             value={telefone}
@@ -21,7 +39,12 @@ const Login = () => {
             inputClass="!w-50 lg:!w-80 lg:!text-2xl p-2 rounded border mb-4 font-bold !bg-apoio text-principal text-center lg:!p-5"
             enableSearch
           />
-          <button className="rounded bg-botoes px-3 py-1 text-principal">Entrar</button>
+          <button
+            onClick={(_) => handleCheckPhone()}
+            className="transition-all rounded bg-botoes px-3 py-1 text-principal font-bold cursor-pointer hover:bg-principal hover:text-fundo flex items-center"
+          >
+            {loading ? <ClipLoader size={22} color="#5B6F44"  /> : <>Continuar</>}
+          </button>
         </form>
       </div>
     </Container>

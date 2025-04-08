@@ -3,7 +3,9 @@ import {
   getAuth,
   setPersistence,
   browserLocalPersistence,
+  RecaptchaVerifier,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8cfpa-XcqEtFZAfG_KSxLTrqek8_K2UE",
@@ -17,7 +19,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 setPersistence(auth, browserLocalPersistence);
 
-export { auth };
+export { auth, db, RecaptchaVerifier };
