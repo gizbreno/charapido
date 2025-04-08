@@ -11,21 +11,42 @@ import logo from "../../assets/logo.png";
 //elements
 import { useState } from "react";
 import { db } from "../../firebase";
-import {collection, query, where, getDocs, limitToLast} from "firebase/firestore"
-import {ClipLoader} from "react-spinners";
-import {toast} from 'react-toastify'
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  limitToLast,
+} from "firebase/firestore";
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [telefone, setTelefone] = useState("");
   const [setp, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
   //function to check if number exists
 
-  const handleCheckPhone = (e) => {
+  const handleCheckPhone =async  (e) => {
     e.preventDefault();
     setLoading(true);
-    toast.success('ola')
+    if (telefone.length < 10) {
+      toast.warn("Preencha todos os numeros do seu telefone");
+      setLoading(false);
+      return;
+    }
+    const q = query(collection(db, "users"), where("phone", "==", telefone));
+    const querySnap = await getDocs(q)
+
+    if(!querySnap.empty){
+      setStep(2)
+      setLoading(false)
+    }else{
+      navigate('/register')
+    }
   };
   return (
     <Container>
@@ -43,10 +64,14 @@ const Login = () => {
             enableSearch
           />
           <button
-            onClick={(_) => handleCheckPhone()}
+            onClick={(e) => handleCheckPhone(e)}
             className="transition-all rounded bg-botoes px-3 py-1 text-principal font-bold cursor-pointer hover:bg-principal hover:text-fundo flex items-center"
           >
-            {loading ? <ClipLoader size={22} color="#5B6F44"  /> : <>Continuar</>}
+            {loading ? (
+              <ClipLoader size={22} color="#5B6F44" />
+            ) : (
+              <>Continuar</>
+            )}
           </button>
         </form>
       </div>
