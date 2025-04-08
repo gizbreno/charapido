@@ -11,7 +11,9 @@ import logo from "../../assets/logo.png";
 //elements
 import { useState } from "react";
 import { db } from "../../firebase";
+import {collection, query, where, getDocs, limitToLast} from "firebase/firestore"
 import {ClipLoader} from "react-spinners";
+import {toast} from 'react-toastify'
 
 const Login = () => {
   const [telefone, setTelefone] = useState("");
@@ -23,6 +25,7 @@ const Login = () => {
   const handleCheckPhone = (e) => {
     e.preventDefault();
     setLoading(true);
+    toast.success('ola')
   };
   return (
     <Container>
