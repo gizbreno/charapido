@@ -1,5 +1,6 @@
 //components
 import Container from "../../components/container";
+import CountdownTimer from "../../components/Counter";
 
 //libs
 import PhoneInput from "react-phone-input-2";
@@ -9,7 +10,7 @@ import "react-phone-input-2/lib/style.css";
 import logo from "../../assets/logo.png";
 
 //elements
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import {
@@ -25,9 +26,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const Login = () => {
   const [telefone, setTelefone] = useState("");
   const [name, setName] = useState("");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
   const auth = getAuth();
 
@@ -67,6 +67,11 @@ const Login = () => {
       navigate("/register");
     }
   };
+  const reenviarCodigo = () => {
+    // aqui você chama o firebase para reenviar o SMS
+    console.log("Código reenviado!");
+  };
+
   return (
     <Container>
       <AnimatePresence>
@@ -145,6 +150,11 @@ const Login = () => {
                 )}
               </button>
             </form>
+
+            <div>
+              
+              <CountdownTimer initialSeconds={120} onResend={reenviarCodigo} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
