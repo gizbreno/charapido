@@ -1,11 +1,12 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
+  RecaptchaVerifier,
   setPersistence,
   browserLocalPersistence,
-  RecaptchaVerifier,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import {} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8cfpa-XcqEtFZAfG_KSxLTrqek8_K2UE",
@@ -21,6 +22,5 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-setPersistence(auth, browserLocalPersistence);
-
+await setPersistence(auth, browserLocalPersistence);
 export { auth, db, RecaptchaVerifier };

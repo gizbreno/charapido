@@ -1,9 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Layout from './components/Layout'
-import DashBoard from './pages/DashBoard'
-import Login from './pages/Login'
-import Register from './pages/Register'
+import Layout from "./components/Layout";
+import DashBoard from "./pages/DashBoard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import ProtectedRoute from "./components/ProtectedRoutes";
+import Publicroute from "./components/PublicRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -11,16 +14,20 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:  <DashBoard />,
-      }
+        element: (
+          <ProtectedRoute>
+            <DashBoard />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Publicroute><Login /></Publicroute>,
   },
   {
     path: "/register",
-    element: <Register />,
+    element: <Publicroute><Register /></Publicroute>,
   },
 ]);

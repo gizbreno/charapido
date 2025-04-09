@@ -32,7 +32,7 @@ export default function CountdownTimer({ initialSeconds = 120, onResend }) {
     <div className="text-center mt-4 text-sm text-gray-600">
       {canResend ? (
         <button
-          className="text-green-600 font-medium hover:underline"
+          className="text-principal font-medium hover:underline cursor-pointer"
           onClick={handleResend}
         >
           Reenviar código

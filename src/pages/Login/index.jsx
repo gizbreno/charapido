@@ -11,13 +11,9 @@ import logo from "../../assets/logo.png";
 
 //elements
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
+import { db, auth } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import {
-  getAuth,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -26,24 +22,37 @@ import { motion, AnimatePresence } from "framer-motion";
 const Login = () => {
   const [telefone, setTelefone] = useState("");
   const [name, setName] = useState("");
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const auth = getAuth();
+  const [code, setCode] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
 
-  const configureRecaptcha = () => {
+  const navigate = useNavigate();
+
+  //configure recaptcha
+  const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: (response) => {
-            // reCAPTCHA solved, allow signInWithPhoneNumber
-            console.log("reCAPTCHA resolvido!");
-          },
-        }
-      );
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        'size': 'invisible',
+        'callback': (response) => {
+           // Não chame nada aqui por enquanto
+        },
+      });
+      window.recaptchaVerifier.render(); // força a renderização
+    }
+  };
+
+   // Envia o código SMS (ou simula no modo de teste)
+   const handleSendCode = async () => {
+    setupRecaptcha();
+    const appVerifier = window.recaptchaVerifier;
+
+    try {
+      const result = await signInWithPhoneNumber(auth, telefone, appVerifier);
+      setConfirmationResult(result);
+      toast.success('Código enviado!');
+    } catch (error) {
+      toast.error("Erro ao enviar código:", error);
     }
   };
 
@@ -69,11 +78,29 @@ const Login = () => {
   };
   const reenviarCodigo = () => {
     // aqui você chama o firebase para reenviar o SMS
-    console.log("Código reenviado!");
+    toast.success('Codigo enviado com sucesso')
   };
 
+  //verifica o codigo 
+  const handleVerifyCode = async (e) => {
+    e.preventDefault()
+    try {
+      await confirmationResult.confirm(code);
+      toast.success("Login realizado com sucesso!");
+      navigate('/')
+    } catch (error) {
+      toast.error("Código inválido", error);
+    }
+  };
+
+  useEffect(()=>{
+    if(step === 2){
+      handleSendCode()
+    }
+  },[step])
   return (
     <Container>
+      <div id="recaptcha-container"></div>
       <AnimatePresence>
         {step === 1 && (
           <motion.div
@@ -130,7 +157,7 @@ const Login = () => {
               </span>
 
               <span className="text-apoio">
-                Diite o codigo enviado para{" "}
+                Digite o codigo enviado para{" "}
                 <p className="font-bold text-principal">{telefone}</p>
               </span>
               <input
@@ -138,9 +165,11 @@ const Login = () => {
                 className="bg-apoio rounded text-center w-40 outline-0 p-2 font-bold "
                 inputMode="numeric"
                 maxLength={6}
+                value={code}
+                onChange={e=>setCode(e.target.value)}
               />
               <button
-                onClick={(e) => handleCheckPhone(e)}
+                onClick={(e) => handleVerifyCode(e)}
                 className="transition-all rounded bg-botoes px-3 py-1 text-principal font-bold cursor-pointer hover:bg-principal hover:text-fundo flex items-center"
               >
                 {loading ? (
@@ -150,9 +179,7 @@ const Login = () => {
                 )}
               </button>
             </form>
-
             <div>
-              
               <CountdownTimer initialSeconds={120} onResend={reenviarCodigo} />
             </div>
           </motion.div>
