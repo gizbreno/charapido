@@ -77,7 +77,7 @@ const Login = () => {
     }
   };
   const reenviarCodigo = () => {
-    // aqui você chama o firebase para reenviar o SMS
+    handleSendCode()
     toast.success('Codigo enviado com sucesso')
   };
 
