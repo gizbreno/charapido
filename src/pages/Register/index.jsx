@@ -3,7 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +32,7 @@ const Register = () => {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [sending,setSending] = useState(true)
   const configurarRecaptcha = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
@@ -58,10 +64,12 @@ const Register = () => {
       );
       setConfirmacao(confirmation); // guarda para usar depois na verificação
       toast.success("Código enviado com sucesso!");
+      setSending(false)
       setLoading(false);
       setStep(2);
     } catch (err) {
       setLoading(false);
+      setSending(false)
       console.error("Erro ao enviar código:", err);
       toast.error("Erro ao enviar código");
     }
@@ -84,26 +92,32 @@ const Register = () => {
   };
 
   const handleVerifyCode = async (confirmationResult, code, nome, navigate) => {
-    setLoading(true)
-    try {
-      const resultado = await confirmationResult.confirm(code);
-      const user = resultado.user;
+    setLoading(true);
+    setPersistence(auth, browserLocalPersistence)
+      .then(async () => {
+        try {
+          const resultado = await confirmationResult.confirm(code);
+          const user = resultado.user;
 
-      // Salvar no Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        name: nome,
-        phone: user.phoneNumber,
-        createdAt: serverTimestamp(),
+          // Salvar no Firestore
+          await setDoc(doc(db, "users", user.uid), {
+            name: nome,
+            phone: user.phoneNumber,
+            createdAt: serverTimestamp(),
+          });
+
+          toast.success("Cadastro realizado com sucesso!");
+          setLoading(false);
+          navigate("/"); // redireciona se quiser
+        } catch (err) {
+          setLoading(false);
+          console.error("Erro ao verificar código:", err);
+          toast.error("Código inválido");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
       });
-
-      toast.success("Cadastro realizado com sucesso!");
-      setLoading(false)
-      navigate("/"); // redireciona se quiser
-    } catch (err) {
-      setLoading(false)
-      console.error("Erro ao verificar código:", err);
-      toast.error("Código inválido");
-    }
   };
 
   return (
@@ -151,7 +165,7 @@ const Register = () => {
                   <ClipLoader size={22} />
                 </button>
               ) : (
-                <button
+                <button 
                   onClick={() => handleRegister(telefone, setConfirmacao)}
                   className="bg-botoes text-principal font-bold rounded p-2 hover:bg-principal hover:text-botoes cursor-pointer"
                 >
@@ -172,9 +186,7 @@ const Register = () => {
             transition={{ duration: 0.3 }}
           >
             <img className="w-40 lg:w-60" src={logo} />
-            <div
-              className="flex justify-center flex-col items-center gap-5"
-            >
+            <div className="flex justify-center flex-col items-center gap-5">
               <span className="text-apoio lg:text-2xl">
                 Só mais um pouco{" "}
                 <p className="text-principal font-bold capitalize">{name}</p>
@@ -192,7 +204,7 @@ const Register = () => {
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
               />
-              <button
+              <button disabled={sending}
                 onClick={(_) =>
                   handleVerifyCode(confirmacao, code, name, navigate)
                 }
@@ -201,7 +213,7 @@ const Register = () => {
                 {loading ? (
                   <ClipLoader size={22} color="#5B6F44" />
                 ) : (
-                  <>Continuar</>
+                  sending ? <>Enviando</> : <>Continuar</>
                 )}
               </button>
             </div>

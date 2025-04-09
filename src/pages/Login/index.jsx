@@ -31,6 +31,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [sending,setSending] = useState(true)
 
   const navigate = useNavigate();
 
@@ -60,7 +61,9 @@ const Login = () => {
       const result = await signInWithPhoneNumber(auth, telefone, appVerifier);
       setConfirmationResult(result);
       toast.success("Código enviado!");
+      setSending(false)
     } catch (error) {
+      setSending(false)
       toast.error("Erro ao enviar código:", error);
     }
   };
@@ -172,7 +175,7 @@ const Login = () => {
             >
               <span className="text-apoio lg:text-2xl">
                 Que bom ter você de volta,{" "}
-                <p className="text-principal font-bold">{name}</p>
+                <p className="text-principal font-bold capitalize">{name}</p>
               </span>
 
               <span className="text-apoio">
@@ -187,14 +190,14 @@ const Login = () => {
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
               />
-              <button
+              <button disabled={sending}
                 onClick={(e) => handleVerifyCode(e)}
                 className="transition-all rounded bg-botoes px-3 py-1 text-principal font-bold cursor-pointer hover:bg-principal hover:text-fundo flex items-center"
               >
                 {loading ? (
                   <ClipLoader size={22} color="#5B6F44" />
                 ) : (
-                  <>Continuar</>
+                  sending ? <>Enviando</> : <>Continuar</>
                 )}
               </button>
             </form>
