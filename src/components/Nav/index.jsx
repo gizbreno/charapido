@@ -22,7 +22,7 @@ const Nav = () => {
         to="/invites"
         className={({ isActive }) =>
           isActive
-            ? "-translate-y-8 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
+            ? "-translate-y-3 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
             : "!text-principal  p-2"
         }
       >
@@ -32,7 +32,7 @@ const Nav = () => {
         to="/models"
         className={({ isActive }) =>
           isActive
-            ? "-translate-y-8 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
+            ? "-translate-y-3 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
             : "!text-principal  p-2"
         }
       >
@@ -42,7 +42,7 @@ const Nav = () => {
         to="/"
         className={({ isActive }) =>
           isActive
-            ? "-translate-y-8 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
+            ? "-translate-y-3 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
             : "!text-principal  p-2"
         }
       >
@@ -52,7 +52,7 @@ const Nav = () => {
         to="/help"
         className={({ isActive }) =>
           isActive
-            ? "-translate-y-8 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
+            ? "-translate-y-3 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
             : "!text-principal  p-2"
         }
       >
@@ -63,7 +63,7 @@ const Nav = () => {
         to="/logout"
         className={({ isActive }) =>
           isActive
-            ? "-translate-y-8 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
+            ? "-translate-y-3 transition-all bg-principal p-2 border-2 border-botoes rounded-full text-botoes"
             : "!text-principal  p-2"
         }
         onClick={async () => {

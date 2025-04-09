@@ -3,21 +3,24 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { router } from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {ToastContainer} from 'react-toastify'
+import { ToastContainer } from "react-toastify";
+import { UserProvider } from "./context/userContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ToastContainer
-      position="top-right"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick={true}
-      rtl={false}
-      draggable
-      theme="light"
-    />
+    <UserProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={true}
+        rtl={false}
+        draggable
+        theme="light"
+      />
+
       <RouterProvider router={router} />
-      
+    </UserProvider>
   </StrictMode>
 );

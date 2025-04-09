@@ -1,16 +1,16 @@
-import {auth} from '../../firebase'
-import Container from '../../components/container'
+import Container from "../../components/container";
+import { useUser } from "../../context/UserContext";
 
 const Dashboard = () => {
+  const { user } = useUser();
 
-  const user = auth.currentUser
-
-  console.log(user.phoneNumber)
   return (
-    <Container >
-      <div className='bg-botoes h-full w-full overflow-y-auto'>sss</div>
+    <Container>
+      <div className="bg-botoes h-full w-full overflow-y-auto">
+        {user.events ? <>eventos</> : <div></div>}
+      </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
