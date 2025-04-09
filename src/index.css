@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+*{
+  outline: 0;
+}
 
 @theme {
   --color-principal: #5b6f44;
