@@ -13,7 +13,12 @@ import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 import { db, auth } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +27,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Login = () => {
   const [telefone, setTelefone] = useState("");
   const [name, setName] = useState("");
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
@@ -32,30 +37,34 @@ const Login = () => {
   //configure recaptcha
   const setupRecaptcha = () => {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'invisible',
-        'callback': (response) => {
-           // Não chame nada aqui por enquanto
-        },
-      });
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response) => {
+            // Não chame nada aqui por enquanto
+          },
+        }
+      );
       window.recaptchaVerifier.render(); // força a renderização
     }
   };
 
-   // Envia o código SMS (ou simula no modo de teste)
-   const handleSendCode = async () => {
+  // Envia o código SMS (ou simula no modo de teste)
+  const handleSendCode = async () => {
     setupRecaptcha();
     const appVerifier = window.recaptchaVerifier;
 
     try {
       const result = await signInWithPhoneNumber(auth, telefone, appVerifier);
       setConfirmationResult(result);
-      toast.success('Código enviado!');
+      toast.success("Código enviado!");
     } catch (error) {
       toast.error("Erro ao enviar código:", error);
     }
   };
-
+  console.log(auth.currentUser)
   //function to check if number exists
   const handleCheckPhone = async (e) => {
     e.preventDefault();
@@ -77,30 +86,37 @@ const Login = () => {
     }
   };
   const reenviarCodigo = () => {
-    handleSendCode()
-    toast.success('Codigo enviado com sucesso')
+    handleSendCode();
+    toast.success("Codigo enviado com sucesso");
   };
 
-  //verifica o codigo 
+  //verifica o codigo
   const handleVerifyCode = async (e) => {
-    e.preventDefault()
-    try {
-      setLoading(true)
-      await confirmationResult.confirm(code);
-      setLoading(false)
-      toast.success("Login realizado com sucesso!");
-      navigate('/')
-    } catch (error) {
-      setLoading(false)
-      toast.error("Código inválido", error);
-    }
+    e.preventDefault();
+    setPersistence(auth, browserLocalPersistence)
+      .then(async () => {
+        try {
+          setLoading(true);
+          await confirmationResult.confirm(code);
+          setLoading(false);
+
+          toast.success("Login realizado com sucesso!");
+          navigate("/");
+        } catch (error) {
+          setLoading(false);
+          toast.error("Código inválido", error);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  useEffect(()=>{
-    if(step === 2){
-      handleSendCode()
+  useEffect(() => {
+    if (step === 2) {
+      handleSendCode();
     }
-  },[step])
+  }, [step]);
   return (
     <Container>
       <div id="recaptcha-container"></div>
@@ -169,7 +185,7 @@ const Login = () => {
                 inputMode="numeric"
                 maxLength={6}
                 value={code}
-                onChange={e=>setCode(e.target.value)}
+                onChange={(e) => setCode(e.target.value)}
               />
               <button
                 onClick={(e) => handleVerifyCode(e)}

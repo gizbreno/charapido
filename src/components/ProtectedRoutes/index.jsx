@@ -1,14 +1,23 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import {useEffect} from 'react'
-
-import { auth,configurarPersistencia } from "../../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function ProtectedRoute({ children }) {
+  const [user, setUser] = useState(undefined); // undefined = carregando
+
   useEffect(() => {
-    configurarPersistencia().catch((e) => {
-      console.error("Erro ao configurar persistência:", e);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
     });
+
+    return () => unsubscribe(); // limpa o listener quando o componente desmontar
   }, []);
-  const user = auth.currentUser;
+
+  if (user === undefined) {
+    // você pode colocar um spinner aqui se quiser
+    return <div>Carregando...</div>;
+  }
+
   return user ? children : <Navigate to="/login" />;
 }

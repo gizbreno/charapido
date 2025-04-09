@@ -21,9 +21,5 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 🔧 Aqui está a função exportada para ser chamada no início do app
-const configurarPersistencia = () => {
-  return setPersistence(auth, browserLocalPersistence);
-};
 
-export { auth, db, RecaptchaVerifier, configurarPersistencia };
+export { auth, db, RecaptchaVerifier };
