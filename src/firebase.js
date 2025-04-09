@@ -6,7 +6,6 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import {} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB8cfpa-XcqEtFZAfG_KSxLTrqek8_K2UE",
@@ -22,5 +21,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-await setPersistence(auth, browserLocalPersistence);
-export { auth, db, RecaptchaVerifier };
+// 🔧 Aqui está a função exportada para ser chamada no início do app
+const configurarPersistencia = () => {
+  return setPersistence(auth, browserLocalPersistence);
+};
+
+export { auth, db, RecaptchaVerifier, configurarPersistencia };

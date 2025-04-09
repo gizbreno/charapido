@@ -85,10 +85,13 @@ const Login = () => {
   const handleVerifyCode = async (e) => {
     e.preventDefault()
     try {
+      setLoading(true)
       await confirmationResult.confirm(code);
+      setLoading(false)
       toast.success("Login realizado com sucesso!");
       navigate('/')
     } catch (error) {
+      setLoading(false)
       toast.error("Código inválido", error);
     }
   };
