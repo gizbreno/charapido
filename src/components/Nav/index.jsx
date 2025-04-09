@@ -5,10 +5,12 @@ import { toast } from "react-toastify";
 
 //icons
 import {
+  FaCalendarPlus,
   FaHandshake,
   FaHandsHelping,
   FaHome,
   FaList,
+  FaPlus,
   FaSignOutAlt,
 } from "react-icons/fa";
 import { PiListStarFill } from "react-icons/pi";
@@ -54,7 +56,7 @@ const Nav = () => {
             : "!text-principal  p-2"
         }
       >
-        <FaHandsHelping size={36} />
+        <FaCalendarPlus size={36} />
       </NavLink>
 
       <NavLink

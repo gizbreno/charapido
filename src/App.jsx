@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter,Navigate } from "react-router-dom";
 
 import Layout from "./components/Layout";
 import DashBoard from "./pages/DashBoard";
@@ -39,4 +39,8 @@ export const router = createBrowserRouter([
     path: "/register",
     element: <Publicroute><Register /></Publicroute>,
   },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />
+  }
 ]);
