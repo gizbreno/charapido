@@ -24,7 +24,7 @@ const Nav = () => {
             : "!text-principal  p-2"
         }
       >
-        <FaList size={36} />
+        <FaList size={32} />
       </NavLink>
       <NavLink
         to="/models"

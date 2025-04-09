@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import DashBoard from "./pages/DashBoard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Convidados from './pages/Convidados'
 
 import ProtectedRoute from "./components/ProtectedRoutes";
 import Publicroute from "./components/PublicRoutes";
@@ -20,6 +21,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/invites",
+        element: (
+          <ProtectedRoute>
+            <Convidados />
+          </ProtectedRoute>
+        ),
+      }
     ],
   },
   {
