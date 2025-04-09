@@ -1,5 +1,5 @@
 import {auth} from '../../firebase'
-
+import Container from '../../components/container'
 
 const Dashboard = () => {
 
@@ -7,7 +7,9 @@ const Dashboard = () => {
 
   console.log(user.phoneNumber)
   return (
-    <div>Dashboard</div>
+    <Container >
+      <div className='bg-botoes h-full w-full overflow-y-auto'>sss</div>
+    </Container>
   )
 }
 
