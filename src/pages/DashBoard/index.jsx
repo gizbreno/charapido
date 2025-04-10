@@ -18,9 +18,10 @@ const Dashboard = () => {
                 Pareçe que você ainda nao fez nenhum evento, que tal iniciarmos
                 um ?
               </span>
-              <button 
-              onClick={_=>setStep(2)}
-              className="bg-apoio rounded p-2 mt-2 font-bold cursor-pointer hover:bg-principal hover:text-apoio">
+              <button
+                onClick={(_) => setStep(2)}
+                className="bg-apoio rounded p-2 mt-2 font-bold cursor-pointer hover:bg-principal hover:text-apoio"
+              >
                 Criar
               </button>
             </div>
