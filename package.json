@@ -29,6 +29,7 @@
     "@fontsource/whisper": "^5.2.5",
     "@tailwindcss/vite": "^4.1.3",
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
     "firebase": "^11.6.0",
     "framer-motion": "^12.6.3",
     "react": "^19.0.0",
