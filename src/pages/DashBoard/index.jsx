@@ -145,7 +145,7 @@ const Dashboard = () => {
               <h1 className="text-xl">Escolha um modelo de convite:</h1>
               <div>
                 {console.log(invitationModels)}
-                <Model modelIndex={1} name={name} />
+                <Model modelIndex={0} name={name} adress={adress} date={date} hour={hour} />
               </div>
               <div className="mt-8 flex justify-center gap-2 items-center border-2 p-2 rounded cursor-pointer hover:bg-apoio">
                 <FaExchangeAlt className="" /> Mudar

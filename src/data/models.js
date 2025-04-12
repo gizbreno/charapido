@@ -49,7 +49,7 @@ export const invitationModels = [
         fontName: "Kaushan Script",
         fontImport: "@fontsource/kaushan-script",
         fontColor: "#183b22",
-        fontPosition: { x: 26.22, y: 71.29 },
+        fontPosition: { x: 26.22, y: 47 },
         fontRest: {
           fontFamily: "Shantell Sans",
           fontImport: "@fontsource/shantell-sans",
@@ -71,7 +71,7 @@ export const invitationModels = [
         fontImport: "@fontsource/playfair-display",
         fontColor: "#c48258",
         fontSize: 43,
-        fontPosition: { x: 20.53, y: 68.93 },
+        fontPosition: { x: 20.53, y: 50.93 },
         fontRest: {
           fontFamily: "Nunito",
           fontImport: "@fontsource/nunito",
@@ -93,7 +93,7 @@ export const invitationModels = [
         fontImport: "@fontsource/raleway",
         fontColor: "#80addb",
         fontSize: 26.5,
-        fontPosition: { x: 20.34, y: 100.02 },
+        fontPosition: { x: 20.34, y: 66 },
         fontRest: {
           fontFamily: "Montserrat",
           fontImport: "@fontsource/montserrat",
@@ -115,7 +115,7 @@ export const invitationModels = [
         fontImport: "@fontsource/parisienne",
         fontColor: "#a4744f",
         fontSize: 44.4,
-        fontPosition: { x: 28.9, y: 64.22 },
+        fontPosition: { x: 28.9, y: 45 },
         fontRest: {
           fontFamily: "Nunito",
           fontImport: "@fontsource/nunito",
@@ -137,7 +137,7 @@ export const invitationModels = [
         fontImport: "@fontsource/saira-stencil-one",
         fontColor: "#df819a",
         fontSize: 17.2,
-        fontPosition: { x: 19.2, y: 106.73 },
+        fontPosition: { x: 19.2, y: 73 },
         fontRest: {
           fontFamily: "Baloo 2",
           fontImport: "@fontsource/baloo-2",
@@ -155,7 +155,7 @@ export const invitationModels = [
         fontImport: "@fontsource/lemon",
         fontColor: "#8d9355",
         fontSize: 32.9,
-        fontPosition: { x: 40.61, y: 50.07 },
+        fontPosition: { x: 40.61, y: 32 },
         fontRest: {
           fontFamily: "Mooli",
           fontImport: "@fontsource/mooli",

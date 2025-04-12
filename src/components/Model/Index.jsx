@@ -45,15 +45,17 @@ const Index = ({ modelIndex, name }) => {
       {console.log(model)}
       <img src={model.image} className="absolute top-0" />
       <p
-        className="absolute"
+        className="absolute w-full text-center"
         style={{
           top: `${model.fontPosition.y}%`,
-          left: `${model.fontPosition.x}%`,
           fontSize: scaledFontSize,
         }}
       >
         {name}
       </p>
+      <p>{hour}</p>
+      <p>{adress}</p>
+      <p>{date}</p>
     </div>
   );
 };
