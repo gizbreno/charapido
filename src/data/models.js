@@ -29,7 +29,7 @@ export const invitationModels = [
         fontImport: "@fontsource/whisper",
         fontColor: "#59a6dd",
         fontSize: 86.5,
-        fontPosition: { x: 30.96, y: 39.08 },
+        fontPosition: { x: 30.96, y: 34.08 },
         fontRest: {
           fontFamily: "Arima Madurai",
           fontImport: "@fontsource/arima-madurai",
