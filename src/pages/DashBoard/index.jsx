@@ -4,8 +4,9 @@ import { useState } from "react";
 import { FaCheck, FaExchangeAlt, FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
-import { format, formatDate } from "date-fns";
+import { differenceInDays, format, formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import logo from "../../assets/logo.png";
 
 const Dashboard = () => {
   const { user, handleUpdateUser, loadingUpdate } = useUser();
@@ -95,22 +96,24 @@ const Dashboard = () => {
         newUser.events.push({
           name,
           adress,
-          "date": dataFormated,
+          date: dataFormated,
+          dateOrigin: date,
           hour,
           mimo,
           obs,
-          "url": uploadUrl
+          url: uploadUrl,
         });
       } else {
         newUser.events = [
           {
             name,
             adress,
-            "date": dataFormated,
+            date: dataFormated,
+            dateOrigin: date,
             hour,
             mimo,
             obs,
-            "url": uploadUrl
+            url: uploadUrl,
           },
         ];
       }
@@ -119,23 +122,24 @@ const Dashboard = () => {
         {
           name,
           adress,
-          "date": dataFormated,
+          date: dataFormated,
+          dateOrigin: date,
           hour,
           mimo,
           obs,
-          "url": uploadUrl
+          url: uploadUrl,
         },
       ];
     }
     const result = await handleUpdateUser(newUser);
-    if(result.sucess){
-      setStep(0)
-      toast.success('Evento criado com sucesso')
-      return
+    if (result.sucess) {
+      setStep(0);
+      toast.success("Evento criado com sucesso");
+      return;
     }
-    if(!result.sucess){
-      toast.error('Ocorreu um erro tente novamente mais tarde')
-      return
+    if (!result.sucess) {
+      toast.error("Ocorreu um erro tente novamente mais tarde");
+      return;
     }
   };
   return (
@@ -143,7 +147,39 @@ const Dashboard = () => {
       {step === 0 && (
         <div className="bg-botoes h-full w-full overflow-y-auto flex items-center">
           {user.events ? (
-            <>eventos</>
+            <div className=" w-full h-full flex flex-wrap  items-start p-5 lg:w-xl text-principal">
+              {user.events.map((el, index) => (
+                <div className="flex w-full flex-col" key={index}>
+                  <div
+                    className="bg-apoio rounded-t-xl w-full p-2 flex justify-between text-principal font-bold"
+                  >
+                    <p className="capitalize">{el.name}</p>
+                    <p>{el.date}</p>
+                    <p>{el.hour}</p>
+                  </div>
+                  <div className="flex justify-between w-full pt-3 mx-auto">
+                    <div className="rounded border-2 border-principal min-w-60">
+                      <span className="flex w-full justify-between p-2">
+                        Convidados:{" "}
+                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                      </span>
+                      <span className="flex w-full justify-between p-2">
+                        Confirmados: :{" "}
+                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                      </span>
+                      <span className="flex w-full justify-between p-2">
+                        Fraldas destinadas: :{" "}
+                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                      </span>
+                    </div>
+                    <div className="flex  flex-col items-center">
+                      <img src={logo} className="w-40" /> <p>Faltam: <strong>{differenceInDays(new Date(el.dateOrigin),new Date())}</strong> dias</p>
+                      {console.log(el.dateOrigin)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="mx-auto w-80 text-principal lg:text-2xl flex flex-col items-start">
               <span>
