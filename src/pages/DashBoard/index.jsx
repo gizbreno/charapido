@@ -1,7 +1,16 @@
 import Container from "../../components/container";
 import { useUser } from "../../context/UserContext";
 import { useState } from "react";
-import { FaCheck, FaExchangeAlt, FaUpload } from "react-icons/fa";
+import {
+  FaCheck,
+  FaExchangeAlt,
+  FaPencilAlt,
+  FaPlus,
+  FaPlusSquare,
+  FaTrash,
+  FaUpload,
+  FaUserPlus,
+} from "react-icons/fa";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { differenceInDays, format, formatDate } from "date-fns";
@@ -17,6 +26,7 @@ const Dashboard = () => {
   const [mimo, setMimo] = useState(false);
   const [hour, setHour] = useState("");
   const [obs, setObs] = useState("");
+  const [editEvent, setEditEvent] = useState(false);
 
   //uploadImage
   const [image, setImage] = useState(null);
@@ -24,7 +34,7 @@ const Dashboard = () => {
   const [uploadUrl, setUploadUrl] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  const dataFormated =
+  var dataFormated =
     date &&
     format(new Date("2025-04-12"), "dd 'de' MMMM 'de' yyyy", {
       locale: ptBR,
@@ -142,6 +152,24 @@ const Dashboard = () => {
       return;
     }
   };
+
+  const handleAddGuest = () => {};
+  const handleExcludeEvent = () => {};
+  const handleEditEvent = (element) => {
+    console.log(element);
+    setName(element.name);
+    setAdress(element.adress);
+    setDate(element.dateOrigin);
+    dataFormated = element.date;
+    setHour(element.hour);
+    setMimo(element.mimo);
+    setObs(element.obs);
+    setUploadUrl(element.url);
+    setPreviewUrl(element.url);
+    setStep(1);
+    setEditEvent(true);
+    console.log(element.mimo);
+  };
   return (
     <Container>
       {step === 0 && (
@@ -149,16 +177,17 @@ const Dashboard = () => {
           {user.events ? (
             <div className=" w-full h-full flex flex-wrap  items-start p-5 lg:w-xl text-principal">
               {user.events.map((el, index) => (
-                <div className="flex w-full flex-col" key={index}>
-                  <div
-                    className="bg-apoio rounded-t-xl w-full p-2 flex justify-between text-principal font-bold"
-                  >
+                <div
+                  className="flex w-full flex-col pb-3 shadow-apoio shadow-md"
+                  key={index}
+                >
+                  <div className="bg-apoio rounded-t-xl w-full p-2 flex justify-between text-principal font-bold">
                     <p className="capitalize">{el.name}</p>
                     <p>{el.date}</p>
                     <p>{el.hour}</p>
                   </div>
                   <div className="flex justify-between w-full pt-3 mx-auto">
-                    <div className="rounded border-2 border-principal min-w-60">
+                    <div className="rounded border-2 border-principal min-w-60 flex  flex-col justify-center">
                       <span className="flex w-full justify-between p-2">
                         Convidados:{" "}
                         <p className="bg-fundo px-2 rounded font-bold">0</p>
@@ -173,12 +202,42 @@ const Dashboard = () => {
                       </span>
                     </div>
                     <div className="flex  flex-col items-center">
-                      <img src={logo} className="w-40" /> <p>Faltam: <strong>{differenceInDays(new Date(el.dateOrigin),new Date())}</strong> dias</p>
+                      <img src={logo} className="w-40" />{" "}
+                      <p>
+                        Faltam:{" "}
+                        <strong>
+                          {differenceInDays(
+                            new Date(el.dateOrigin),
+                            new Date()
+                          )}
+                        </strong>{" "}
+                        dias
+                      </p>
                       {console.log(el.dateOrigin)}
                     </div>
                   </div>
+                  <div className="text-2xl mt-3  flex justify-between px-2">
+                    <button
+                      onClick={(_) => handleEditEvent(el)}
+                      className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio"
+                    >
+                      <FaPencilAlt />
+                    </button>
+                    <button className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
+                      <FaUserPlus />
+                    </button>
+                    <button className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
+                      <FaTrash />
+                    </button>
+                  </div>
                 </div>
               ))}
+              <div className=" p-2 w-full flex justify-center self-end">
+                <button className="min-w-20 rounded flex justify-center bg-apoio p-2 items-center gap-2 font-bold ">
+                  Criar novo evento
+                  <FaPlus />
+                </button>
+              </div>
             </div>
           ) : (
             <div className="mx-auto w-80 text-principal lg:text-2xl flex flex-col items-start">
@@ -238,6 +297,7 @@ const Dashboard = () => {
                   <p>Mimo:</p>
                   <input
                     value={mimo}
+                    checked={mimo}
                     onChange={(e) => setMimo(e.target.checked)}
                     type="checkbox"
                     className=" w-7 h-7 mt-1 appearance-none border-2 border-apoio rounded-sm checked:bg-principal checked:border-principal transition-colors"
@@ -331,14 +391,23 @@ const Dashboard = () => {
               <div className="flex gap-2">
                 {previewUrl && (
                   <button
-                    onClick={handleUpload}
-                    disabled={!image || loading}
+                    onClick={(_) =>
+                      image ? handleUpload() : (!image && editEvent) && setStep(3)
+                    }
+                    disabled={
+                      image ? false : editEvent ? false : loading ? true : false
+                    }
                     className="mt-8 lg:mt-3 flex justify-center gap-2 items-center border-2 p-2 rounded cursor-pointer hover:bg-apoio"
                   >
                     {loading ? (
                       <>
                         <ClipLoader size={20} color="#5B6F44" />
                         Salvando...
+                      </>
+                    ) : editEvent && !image ? (
+                      <>
+                        <FaCheck />
+                        Continuar
                       </>
                     ) : (
                       <>
@@ -359,6 +428,20 @@ const Dashboard = () => {
                         onChange={handleFileChange}
                       />
                       <FaUpload className="" /> Selecionar
+                    </label>
+                  </div>
+                )}
+                {editEvent && !image && (
+                  <div>
+                    <label className="mt-8 lg:mt-3 flex justify-center gap-2 items-center border-2 p-2 rounded cursor-pointer hover:bg-apoio">
+                      <input
+                        id="inputImage"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                      <FaExchangeAlt className="" /> Alterar
                     </label>
                   </div>
                 )}
