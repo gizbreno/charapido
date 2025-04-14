@@ -16,6 +16,8 @@ import { ClipLoader } from "react-spinners";
 import { differenceInDays, format, formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import logo from "../../assets/logo.png";
+import Chart from "../../components/Chart";
+import { Pie } from "recharts";
 
 const Dashboard = () => {
   const { user, handleUpdateUser, loadingUpdate } = useUser();
@@ -216,6 +218,8 @@ const Dashboard = () => {
                       {console.log(el.dateOrigin)}
                     </div>
                   </div>
+                  {/* Aqui pie chart */}
+                  {el.fraldas && <Chart data={el.fraldas} />}
                   <div className="text-2xl mt-3  flex justify-between px-2">
                     <button
                       onClick={(_) => handleEditEvent(el)}
@@ -392,7 +396,7 @@ const Dashboard = () => {
                 {previewUrl && (
                   <button
                     onClick={(_) =>
-                      image ? handleUpload() : (!image && editEvent) && setStep(3)
+                      image ? handleUpload() : !image && editEvent && setStep(3)
                     }
                     disabled={
                       image ? false : editEvent ? false : loading ? true : false
