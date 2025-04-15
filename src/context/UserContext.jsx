@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const auth = getAuth();
-
+  const [userControl, setUserControl] = useState(false);
   //function to serach user
   const buscarUsuarioPorTelefone = async (numeroTelefone) => {
     try {
@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, [auth,userControl]);
 
   const handleUpdateUser = async (userData) => {
     let docRef = doc(db, "users", userData.id);
@@ -76,9 +76,13 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const handleSetUser = ()=>{
+    setUserControl(!userControl)
+  }
+
   return (
     <UserContext.Provider
-      value={{ user, setUser, handleUpdateUser, loadingUpdate }}
+      value={{ user, setUser, handleUpdateUser, loadingUpdate,handleSetUser }}
     >
       {children}
     </UserContext.Provider>

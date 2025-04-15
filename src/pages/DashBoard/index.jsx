@@ -9,6 +9,7 @@ import {
   FaPlusSquare,
   FaTrash,
   FaUpload,
+  FaUserFriends,
   FaUserPlus,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -17,6 +18,7 @@ import { differenceInDays, format, formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import logo from "../../assets/logo.png";
 import Chart from "../../components/Chart";
+import {useNavigate} from 'react-router-dom'
 import { Pie } from "recharts";
 
 const Dashboard = () => {
@@ -35,6 +37,8 @@ const Dashboard = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploadUrl, setUploadUrl] = useState(null);
   const [loading, setLoading] = useState(null);
+
+  const navigate = useNavigate()
 
   var dataFormated =
     date &&
@@ -229,6 +233,11 @@ const Dashboard = () => {
                     </button>
                     <button className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
                       <FaUserPlus />
+                    </button>
+                    <button 
+                    onClick={_=>navigate(`/invites/${index}`)}
+                    className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
+                      <FaUserFriends />
                     </button>
                     <button className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
                       <FaTrash />

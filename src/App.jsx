@@ -22,13 +22,13 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/invites",
+        path: "/invites/:id",
         element: (
           <ProtectedRoute>
             <Convidados />
           </ProtectedRoute>
         ),
-      }
+      },
     ],
   },
   {
