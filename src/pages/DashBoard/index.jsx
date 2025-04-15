@@ -231,9 +231,7 @@ const Dashboard = () => {
                     >
                       <FaPencilAlt />
                     </button>
-                    <button className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
-                      <FaUserPlus />
-                    </button>
+                    
                     <button 
                     onClick={_=>navigate(`/invites/${index}`)}
                     className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio">
