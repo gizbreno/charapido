@@ -10,10 +10,12 @@ import {
   FaUserPlus,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { doc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import { nanoid } from "nanoid";
 
 const Convidados = () => {
+
   const { user, handleSetUser } = useUser();
   const location = useLocation();
   const navigate = useNavigate();
@@ -137,6 +139,15 @@ const Convidados = () => {
       console.log(error);
     }
   };
+
+  // const updateHandle = async (lista) => {
+  //   let docRef = doc(db, "users", user.id);
+  //   try {
+  //     await updateDoc(docRef, lista);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Container>
@@ -278,7 +289,10 @@ const Convidados = () => {
                     >
                       <FaCheck />
                     </button>
-                    <button className=" bg-botoes px-2 py-1 rounded text-xl flex flex-col items-center min-w-8">
+                    <button
+                      onClick={(_) => navigate(`/invite/${el.id}`)}
+                      className=" bg-botoes px-2 py-1 rounded text-xl flex flex-col items-center min-w-8"
+                    >
                       <FaRegAddressCard />
                     </button>
                     <button
