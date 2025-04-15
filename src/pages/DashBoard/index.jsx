@@ -196,15 +196,15 @@ const Dashboard = () => {
                     <div className="rounded border-2 border-principal min-w-60 flex  flex-col justify-center">
                       <span className="flex w-full justify-between p-2">
                         Convidados:{" "}
-                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                        <p className="bg-fundo px-2 rounded font-bold">{el?.inviteds?.reduce((acc, item) => acc + item.adultos + item.criancas, 0)}</p>
                       </span>
                       <span className="flex w-full justify-between p-2">
                         Confirmados: :{" "}
-                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                        <p className="bg-fundo px-2 rounded font-bold">{el?.inviteds?.reduce((acc, item) => acc + (item.confirm ? 1 : 0), 0)}</p>
                       </span>
                       <span className="flex w-full justify-between p-2">
-                        Fraldas destinadas: :{" "}
-                        <p className="bg-fundo px-2 rounded font-bold">0</p>
+                        Familias: :{" "}
+                        <p className="bg-fundo px-2 rounded font-bold">{el?.inviteds?.length}</p>
                       </span>
                     </div>
                     <div className="flex  flex-col items-center">
@@ -225,12 +225,12 @@ const Dashboard = () => {
                   {/* Aqui pie chart */}
                   {el.fraldas && <Chart data={el.fraldas} />}
                   <div className="text-2xl mt-3  flex justify-between px-2">
-                    <button
+                    {/* <button
                       onClick={(_) => handleEditEvent(el)}
                       className="min-w-20 rounded flex justify-center bg-apoio items-center p-2 cursor-pointer hover:bg-principal hover:text-apoio"
                     >
                       <FaPencilAlt />
-                    </button>
+                    </button> */}
                     
                     <button 
                     onClick={_=>navigate(`/invites/${index}`)}
