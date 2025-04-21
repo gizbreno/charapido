@@ -16,6 +16,11 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
   },
+  "overrides": {
+    "vite": {
+      "rollup": "npm:@rollup/wasm-node"
+    }
+  },
   "dependencies": {
     "@fontsource/arima": "^5.2.5",
     "@fontsource/arima-madurai": "^5.2.5",
