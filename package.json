@@ -9,6 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview --host"
   },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
   "dependencies": {
     "@fontsource/arima": "^5.2.5",
     "@fontsource/arima-madurai": "^5.2.5",
